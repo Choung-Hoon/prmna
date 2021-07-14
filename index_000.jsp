@@ -1,0 +1,586 @@
+﻿<%@ page contentType="text/html;charset=utf-8" %>
+
+<%@ page import="lee.common.config.ConstantUtil" %>
+<%@ page import="lee.common.config.PropertyManager" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.InputStreamReader" %>
+<%@ page import="java.io.FileInputStream" %>
+<%@ page import="java.io.IOException" %>
+<%@ page import="java.io.FileReader" %>
+<%@ page import="java.io.FileWriter" %>
+<%@ page import="java.io.BufferedWriter" %>
+<%@ page import="java.io.OutputStreamWriter" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+<%@ page import=" java.io.File"%>
+<%@ page import=" java.text.SimpleDateFormat"%>
+<%@ page import=" java.util.Date"%>
+<%@ page import=" java.util.Calendar"%>
+
+<%@ include file="../common/_includeInit.inc" %>
+<%@ include file="../common/_checkLoginSession.inc" %>
+
+<html>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41945809-1', 'prmna.pe.kr');
+  ga('send', 'pageview');
+
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41945809-1', 'prmna.pe.kr');
+  ga('send', 'pageview');
+
+</script>
+
+<head>
+<title>▨▧ 프라임코리아 - 건설면허 양도양수 전문업체 ▨▧</title>
+<meta http-equiv="content-type" content="text/html; charset=euc-kr" />
+
+<link rel="stylesheet" type="text/css" href="<%=ConstantUtil.SERVER_HOST%>/share/css/text.css" />
+<script language="javascript" type="text/javascript"  src="<%=ConstantUtil.SERVER_HOST%>/js/jquery-1.5.2.min.js"></script>
+
+<script language="javascript" type="text/javascript"  src="./js/text.js"></script>
+<style>
+	.tt7{font-size:11px;FONT-WEIGHT: bold;color:#7E7E7E;font-family: "굴림,verdana";}
+	.tt8{font-size:11px;FONT-WEIGHT: bold;color:#408FC9;font-family: "굴림,verdana";}
+	.tt9{font-size:11px;FONT-WEIGHT: bold;color:#AEAAAA;font-family: "굴림,verdana";}
+	.tt10{font-size:12px;FONT-WEIGHT: bold;color:#000000;font-family: "굴림,verdana";}
+	.tt11{font-size:12px;FONT-WEIGHT: bold;color:#A24444;font-family: "굴림,verdana";}
+</style>
+</head>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		$("#goToList").click(function()
+        {
+            goToList();
+        });
+
+		$("#goToAdmin").click(function()
+        {
+            goToAdmin();
+        });
+
+	});
+
+	function goToList()
+	{
+		location.href="./main.jsp";
+		//$("#content_view").load("./main.jsp");
+	}
+
+	function goHome()
+	{
+		$("#tit_main").text("건업양도양수 > ");
+		$("#tit_sub").text("오시는길");
+		$("#sub_title").html('<img src="./images/icon/title1_05.gif">');
+		$("#content_view").load("./sub/sub1_05.jsp");
+	}
+
+	function goToAdmin()
+	{
+		//location.href="../common/login.jsp";
+		location.href="../board/admin_search_list.jsp";
+	}
+	
+	function goDownload(docName)
+	{
+		location.href="../form/" + docName;
+	}
+
+	function menuOver(m){
+		$("#sub1").hide();
+		$("#sub2").hide();
+		$("#sub3").hide();
+		$("#sub4").hide();
+		$("#sub5").hide();
+		$("#sub6").hide();
+		$("#sub7").hide();
+		$("#sub8").hide();
+		$("#sub"+m).show();
+	}
+
+	/*메뉴 link, 타이틀 출력 */	
+	function menuLink(m){
+		
+		var tit_main = "";
+		var tit_sub = "";
+		var m_url = "";
+		
+		
+		switch(m){
+			case  '1_01': 
+									//m_url		="sub1_01.jsp";
+								 	tit_main	=" 건설업양도양수";
+								 	tit_sub		=" 양도리스트";
+			break;
+			case  '2_01': 
+									//m_url		="";
+								 	tit_main	=" 양도양수구비서류";
+								 	tit_sub		=" 양도시 구비서류";		
+			break;
+			case  '2_02': 
+									//m_url		="";
+								 	tit_main	=" 양도양수구비서류";
+								 	tit_sub		=" M&A 구비서류";		
+			break;			
+			case  '3_01': 
+									//m_url		="";
+								 	tit_main	=" 신규면허등록/주기적신고";
+								 	tit_sub		=" 신규면허등록";		
+			break;
+			case  '3_02': 
+									//m_url		="";
+								 	tit_main	=" 신규면허등록/주기적신고";
+								 	tit_sub		=" 건설업 면허분류";		
+			break;	
+			case  '3_03': 
+									//m_url		="";
+								 	tit_main	=" 신규면허등록/주기적신고";
+								 	tit_sub		=" 주기적신고";		
+			break;					
+			case  '4_01': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 일반건설업";		
+			break;
+			case  '4_02': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 전문건설업";		
+			break;
+			case  '4_03': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 전기건설업";		
+			break;
+			case  '4_04': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 소방건설업";		
+			break;
+			case  '4_05': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 주택건설업";		
+			break;												
+			case  '4_06': 
+									//m_url		="";
+								 	tit_main	=" 건설업면허분류";
+								 	tit_sub		=" 설비건설업";		
+			break;			
+			case  '5_01': 
+									//m_url		="";
+								 	tit_main	=" 법인설립";
+								 	tit_sub		=" 주식회사";		
+			break;
+			case  '5_02': 
+									//m_url		="";
+								 	tit_main	=" 법인설립";
+								 	tit_sub		=" 유한회사";		
+			break;
+			case  '5_03': 
+									//m_url		="";
+								 	tit_main	=" 법인설립";
+								 	tit_sub		=" 합명회사";		
+			break;
+			case  '5_04': 
+									//m_url		="";
+								 	tit_main	=" 법인설립";
+								 	tit_sub		=" 합자회사";		
+			break;									
+			case  '6_01': 
+									//m_url		="";
+								 	tit_main	=" 기업진단신청";
+								 	tit_sub		=" 재무재표증명";		
+			break;
+			case  '6_02': 
+									//m_url		="";
+								 	tit_main	=" 기업진단신청";
+								 	tit_sub		=" 구비서류";		
+			break;
+			case  '6_03': 
+									//m_url		="";
+								 	tit_main	=" 기업진단신청";
+								 	tit_sub		=" 의뢰서";		
+			break;			
+			case  '7_01': 
+									//m_url		="";
+								 	tit_main	=" 공제조합.출자금";
+								 	tit_sub		=" 공제조합/출자금";		
+			break;
+			case  '8_01': 
+									//m_url		="";
+								 	tit_main	=" 기술자격증";
+								 	tit_sub		=" 기술자격증";		
+			break;
+			case  '8_02': 
+									//m_url		="";
+								 	tit_main	=" 기술자격증";
+								 	tit_sub		=" 인정기술자";		
+			break;
+			}
+			
+		if(m=="1_01"){
+			$("#location_view").hide();
+		}else{
+			$("#location_view").show();
+		}
+		
+		$("#tit_main").text(tit_main +" > ");
+		$("#tit_sub").text(tit_sub);
+		$("#sub_title").html('<img src="./images/icon/title'+m+'.gif">');
+		$("#content_view").load("./sub/sub"+m+".jsp");
+
+	}
+
+	//menuLink();
+
+	$(document).ready( function(){
+			menuLink('1_01');
+	});
+	
+	function downloadDoc(docFileName){
+		$("#rfileName").attr("value", docFileName);
+		$("#cfileName").attr("value", docFileName);
+
+		$("#myformExcel").attr("action", "/servlet/product.dn");
+		$("#myformExcel").attr("encoding", "application/x-www-form-urlencoded");
+		$("#myformExcel").submit();
+	}
+	
+</script>
+
+<%!
+  int todayCount = 0;
+%>
+<form name="myform" id="myform" method="post">
+</form>
+
+<form name="myformExcel" id="myformExcel" method="post" action="">
+	<input type="hidden" id="fileType" name="fileType" value="product" />
+	<input type="hidden" id="rfileName" name="rfileName" />
+	<input type="hidden" id="cfileName" name="cfileName" />
+</form>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<%                
+            
+            String today_file = application.getRealPath("count.txt");
+        		String history_file = application.getRealPath("history.txt");
+        
+        		File file1 = new File(today_file);
+        		File file2 = new File(history_file);
+        		//
+        		// get today
+        		//
+        		SimpleDateFormat frm = new SimpleDateFormat("yyyyMMdd");
+        		Calendar cal = Calendar.getInstance();
+        
+        		String today = frm.format(cal.getTime());
+        
+        		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        		String strFileDate = sdf.format(file1.lastModified());
+        		SimpleDateFormat form = new SimpleDateFormat("yyyyMMdd");
+            // get yesterday
+            cal.add(cal.DATE, -1);
+            String yesterday = sdf.format(cal.getTime());
+            
+        		try {
+        			/**
+        			 * 오늘의 현재 방문자수 구하기
+        			 */        			 
+        			BufferedReader br = new BufferedReader(new FileReader(today_file));
+        			String temp = br.readLine();
+        			
+        			if (null == temp)
+        				temp = "0";
+        			else
+        				temp.trim();
+        			
+        			todayCount = Integer.parseInt(temp);
+        			br.close();
+        			br = null;
+        			//
+        			Date beginDate = (Date) form.parse(today);
+        			Date fileDate = (Date) form.parse(strFileDate);        
+              
+        			long diff = beginDate.getTime() - fileDate.getTime();
+        			/**
+        			 * 오늘 카운트 증가
+        			 */
+        			if (0 == diff) {
+        			  //out.print("2<br>");
+        			
+          			//새로고침시 카운트증가를 방지!!
+                if(session.getAttribute("member") == null){
+                  session.setAttribute("member",";;");
+          				todayCount++;
+          				BufferedWriter bw = new BufferedWriter(new FileWriter(
+          						today_file));
+          				bw.write("" + todayCount);
+          				bw.flush();
+          				bw.close();
+          				bw = null;
+          			}
+                /*
+                FileInputStream in = new FileInputStream(history_file);
+                br = new BufferedReader(new InputStreamReader(in));
+                String strLine = null, tmp; 
+                while ((tmp = br.readLine()) != null)
+                {
+                   strLine = tmp;
+                } 
+                String lastLine = strLine; 
+                in.close();
+                
+                if (null != lastLine) {
+                  String arr[] = lastLine.split(":");
+                  if (arr[0].equals(yesterday))                    
+                    beforeCount = arr[1];
+                  else                    
+                    beforeCount = "0";                
+                } else {
+                  beforeCount = "0";
+                }
+                */
+        			}
+        			/**
+        			 * 1. history.txt에 방문자 기록 추가 
+        			 * 2. count.txt : 1으로 카운트 재설정
+        			 */
+        			else if (diff > 1) {
+        				// 1.
+        				BufferedWriter br1 = new BufferedWriter(new FileWriter(
+        						history_file, true));
+        				br1.newLine();
+        				String newHistory = strFileDate + ":" + todayCount;
+        				br1.write(newHistory, 0, newHistory.length());
+        				br1.close();
+        				// 2.
+        				br1 = new BufferedWriter(new FileWriter(today_file));
+        				br1.write("1");
+        				br1.flush();
+        				br1.close();
+        				br1 = null;
+        				/*
+                todayCount = 1;
+                
+                FileInputStream in = new FileInputStream(history_file);
+                br = new BufferedReader(new InputStreamReader(in));
+                String strLine = null, tmp; 
+                while ((tmp = br.readLine()) != null)
+                {
+                   strLine = tmp;
+                } 
+                String lastLine = strLine; 
+                in.close();
+                
+                if (null != lastLine) {
+                  String arr[] = lastLine.split(":");
+                  if (arr[0].equals(yesterday))                    
+                    beforeCount = arr[1];
+                  else                    
+                    beforeCount = "0";                
+                } else {
+                  beforeCount = "0";
+                }
+                */
+        			}
+        		} catch (Exception e) {
+        		  out.print(e);
+        		}
+        %>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<!--Top menu start-->	
+		<tr>
+			<td valign="top" height="97" colspan="2" align="center" background="./images/main/top_bg.gif">
+				<table width="0%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>																			
+							<table width="100%" height="0%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td width="250" >
+										<img src="./images/main/log.gif">
+									</td>
+									<td style="padding-top:15px">
+										<table width="808" height="0%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<!--<td><img src="./images/main/m_01.gif" onmouseover="menuOver('1')" onclick="menuLink('1_01')"></td> -->
+												<td><img src="./images/main/m_01.gif" onmouseover="menuOver('1')" onclick="goToList()"></td>
+												<td><img src="./images/main/m_02.gif" onmouseover="menuOver('2')" onclick="menuLink('2_01')"></td>
+												<td><img src="./images/main/m_03.gif" onmouseover="menuOver('3')" onclick="menuLink('3_01')"></td>
+												<td><img src="./images/main/m_04.gif" onmouseover="menuOver('4')" onclick="menuLink('4_01')"></td>
+												<td><img src="./images/main/m_05.gif" onmouseover="menuOver('5')" onclick="menuLink('5_01')"></td>
+												<td><img src="./images/main/m_06.gif" onmouseover="menuOver('6')" onclick="menuLink('6_01')"></td>
+												<td><img src="./images/main/m_07.gif" onmouseover="menuOver('7')" onclick="menuLink('7_01')"></td>
+												<td><img src="./images/main/m_08.gif" onmouseover="menuOver('8')" onclick="menuLink('8_01')"></td>																			
+											</tr>
+											<tr>
+												<td height="24" colspan="8" background="./images/main/m_bg.gif">
+												<!--	
+													<div id="sub1" style="display:none;text-align:center;padding-top:3px">
+													     <a href="#" onclick="menuLink('1_01')">건설업양도양수</a> 
+													</div>
+												-->
+													<div id="sub1" style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="goToList()">건설업양도양수</a>
+													</div>
+													<div id="sub2"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('2_01')">양도시구비서류</a> | 
+														<a href="#" onclick="menuLink('2_02')">M&A구비서류</a>
+													</div>
+													<div id="sub3"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('3_01')">신규면허등록</a> | 
+														<a href="#" onclick="menuLink('3_02')">건설업 면허분류</a> | 
+														<a href="#" onclick="menuLink('3_03')">주기적 신고</a>
+													</div>
+													<div id="sub4"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('4_01')">일반건설업</a> | 
+														<a href="#" onclick="menuLink('4_02')">전문건설업</a> | 
+														<a href="#" onclick="menuLink('4_03')">전기공사업</a> | 
+														<a href="#" onclick="menuLink('4_04')">소방공사업</a> | 
+														<a href="#" onclick="menuLink('4_05')">주택건설업</a> | 
+														<a href="#" onclick="menuLink('4_06')">설비공사업</a>
+													</div>
+													<div id="sub5"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('5_01')">주식회사</a> | 
+														<a href="#" onclick="menuLink('5_02')">유한회사</a> | 
+														<a href="#" onclick="menuLink('5_03')">합명회사</a> | 
+														<a href="#" onclick="menuLink('5_04')">합자회사</a>
+													</div>
+													<div id="sub6"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('6_01')">재무재표증명</a> | 
+														<a href="#" onclick="menuLink('6_02')">구비서류</a> | 
+														<a href="#" onclick="menuLink('6_03')">의뢰서</a>
+													</div>
+													<div id="sub7"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('7_01')">공제조합/출자금</a>
+													</div>
+													<div id="sub8"  style="display:none;text-align:center;padding-top:3px">
+														<a href="#" onclick="menuLink('8_01')">기술자격증</a> | 
+														<a href="#" onclick="menuLink('8_02')">인정기술자</a>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>													
+							</table>
+						</td>
+					</tr>
+				</table>															
+			</td>
+		</tr>
+		<!--Top menu end-->
+		<tr>
+			<td align="center">
+				<table width="0%" border="0" cellspacing="0" cellpadding="0" align="center">
+					<tr>
+						<td width="250" valign="top">
+							<!--배너 start-->
+							<%@ include file="./inc/banner_new.jsp" %>			
+							<!--배너 end--> 
+						</td>
+						<td align="left" valign="top">
+							<!--타이틀 start-->
+							<table width="800" border="0" cellspacing="0" cellpadding="0" id="location_view">
+								<tr>
+									<td>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td><img src="./images/icon/titleic.gif" width="31" height="40"></td>
+												<td id="sub_title"></td>
+												<td align="right" style="padding:8 10 3" valign="bottom">
+													<table width="0%" border="0" cellspacing="0" cellpadding="0">
+														<tr>
+															<td><img src="./images/icon/home.gif"></td>
+															<td class="loc_"> > </td>
+															<td class="loc_" id="tit_main"></td>
+															<td class="loc_b" id="tit_sub"></td>
+														</tr>
+													</table>
+												</td>
+												<td width="10"></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="20" colspan="2"><img src="./images/icon/tib.gif"></td>
+								</tr>
+							<!--타이틀 end-->
+							<!--Contents start-->
+							</table>
+							<table width="780" border="0" cellspacing="0" cellpadding="0">
+								<!--타이틀 end-->
+								<tr>
+									<td id="content_view"></td>
+								</tr>
+							<!--Contents start-->
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="20" colspan="2">&nbsp;</td>
+		</tr>
+		<!--buttom start-->
+		<tr>
+			<td background="./images/main/bottom_bg_1.gif">
+				<table width="0%" height="95" border="0" cellspacing="0" cellpadding="0" align="center">
+					<tr>
+						<td><img src="./images/main/bottom_1.gif"></td>
+						<td>
+							<table width="850" border="0" cellspacing="0" cellpadding="0">
+								<tr height="40"><td colspan="4"></td></tr>
+								<tr>
+									<td class="tt9" colspan="3">
+										상호: 프라임코리아&nbsp;&nbsp;&nbsp;
+										대표: 한광수&nbsp;&nbsp;&nbsp;
+										이메일: h82214400@nate.com
+									</td>
+									<td class="tt4" id="goToAdmin">
+										<a href="#" onfocus="this.blur()">[ 관리자 ]</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="tt9" colspan="3">
+										[주소] 서울시 송파구 삼전동 57-15 2층&nbsp;&nbsp;&nbsp;
+										사업자번호: 206-12-30051&nbsp;&nbsp;&nbsp;
+									</td>
+									<td>
+										<table width="0%" border="0" cellspacing="0" cellpadding="0" >
+											<tr>
+												<td class="tt10">TEL:</td>
+												<td class="tt11"> 1688-3880 &nbsp;</td>
+												<td class="tt10">FAX:</td>
+												<td class="tt11"> 0505-323-2000</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<!--buttom end-->
+	</table>
+</body>
+</html>
+				
